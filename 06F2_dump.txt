@@ -1,0 +1,148 @@
+﻿SHEET 06F2 46 rows
+MERGES C45:D45, E45:G45, H45:K45, L45:M45, B1:N1, C33:D33, E33:G33, H33:K33, L33:M33, C34:D34, E34:G34, H34:K34, L34:M34, C43:D43, E43:G43, H43:K43, L43:M43, C44:D44, E44:G44, H44:K44, L44:M44, C32:D32, E32:G32, H32:K32, L32:M32, C29:D29, E29:G29, H29:K29, L29:M29, C30:D30, E30:G30, H30:K30, L30:M30, C26:D26, E26:G26, H26:K26, L26:M26, C31:D31, E31:G31, H31:K31, L31:M31, C27:D27, E27:G27, H27:K27, L27:M27, C28:D28, E28:G28, H28:K28, L28:M28, B23:N24, C25:D25, E25:G25, H25:K25, L25:M25, B16:D16, E16:N16, B17:D17, E17:N17, B18:D18, E18:N18, B19:D19, E19:N19, B20:D20, E20:N20, B21:D21, E21:N21, G10:J10, B3:N4, L5:N5, D6:N6, B10:F11, K10:N10, G11:J11, K11:N11, B7:N7, B8:F8, G8:J8, B9:F9, G9:J9, K9:N9, B13:D13, E13:N13, B14:D14, E14:N14, B15:D15, E15:N15
+B1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+C1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+D1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+E1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+F1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+G1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+H1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+I1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+J1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+K1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+L1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+M1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+N1 {"richText":[{"font":{"bold":true,"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"Purok 8, Brgy. Linao, Ormoc City\nLeyte Philippines, 6541"},{"font":{"size":14,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"\n"},{"font":{"size":12,"color":{"theme":2,"tint":-0.749992370372631},"name":"Arial","family":2},"text":"www.macbuilders.com.ph\n(053) 561-0163"}]}
+B3 IT ASSET HISTORY RECORD
+C3 IT ASSET HISTORY RECORD
+D3 IT ASSET HISTORY RECORD
+E3 IT ASSET HISTORY RECORD
+F3 IT ASSET HISTORY RECORD
+G3 IT ASSET HISTORY RECORD
+H3 IT ASSET HISTORY RECORD
+I3 IT ASSET HISTORY RECORD
+J3 IT ASSET HISTORY RECORD
+K3 IT ASSET HISTORY RECORD
+L3 IT ASSET HISTORY RECORD
+M3 IT ASSET HISTORY RECORD
+N3 IT ASSET HISTORY RECORD
+B4 IT ASSET HISTORY RECORD
+C4 IT ASSET HISTORY RECORD
+D4 IT ASSET HISTORY RECORD
+E4 IT ASSET HISTORY RECORD
+F4 IT ASSET HISTORY RECORD
+G4 IT ASSET HISTORY RECORD
+H4 IT ASSET HISTORY RECORD
+I4 IT ASSET HISTORY RECORD
+J4 IT ASSET HISTORY RECORD
+K4 IT ASSET HISTORY RECORD
+L4 IT ASSET HISTORY RECORD
+M4 IT ASSET HISTORY RECORD
+N4 IT ASSET HISTORY RECORD
+B5 ASSET ID:
+I5 ASSET TYPE:
+B6 LOCATION:
+B7 BASIC INFORMATION
+C7 BASIC INFORMATION
+D7 BASIC INFORMATION
+E7 BASIC INFORMATION
+F7 BASIC INFORMATION
+G7 BASIC INFORMATION
+H7 BASIC INFORMATION
+I7 BASIC INFORMATION
+J7 BASIC INFORMATION
+K7 BASIC INFORMATION
+L7 BASIC INFORMATION
+M7 BASIC INFORMATION
+N7 BASIC INFORMATION
+B8 BRAND:
+C8 BRAND:
+D8 BRAND:
+E8 BRAND:
+F8 BRAND:
+G8 SERIAL NO.:
+H8 SERIAL NO.:
+I8 SERIAL NO.:
+J8 SERIAL NO.:
+K8 MODEL:
+B10 WARRANTY:
+C10 WARRANTY:
+D10 WARRANTY:
+E10 WARRANTY:
+F10 WARRANTY:
+G10 RECEIVING DATE :
+H10 RECEIVING DATE :
+I10 RECEIVING DATE :
+J10 RECEIVING DATE :
+B11 WARRANTY:
+C11 WARRANTY:
+D11 WARRANTY:
+E11 WARRANTY:
+F11 WARRANTY:
+B12 NOTE: Details below are for desktops & laptops only.
+B13 OPERATING SYSTEM:
+C13 OPERATING SYSTEM:
+D13 OPERATING SYSTEM:
+B14 SYSTEM TYPE: 
+C14 SYSTEM TYPE: 
+D14 SYSTEM TYPE: 
+B15 PROCESSOR:
+C15 PROCESSOR:
+D15 PROCESSOR:
+B16 RAM:
+C16 RAM:
+D16 RAM:
+B17 HARD DISK:
+C17 HARD DISK:
+D17 HARD DISK:
+B18 MOTHERBOARD:
+C18 MOTHERBOARD:
+D18 MOTHERBOARD:
+B19 OPTICAL DISK DRIVE:
+C19 OPTICAL DISK DRIVE:
+D19 OPTICAL DISK DRIVE:
+B20 CARD READER:
+C20 CARD READER:
+D20 CARD READER:
+B21 PROGRAMS INSTALLED: 
+C21 PROGRAMS INSTALLED: 
+D21 PROGRAMS INSTALLED: 
+B23 HISTORY RECORD
+C23 HISTORY RECORD
+D23 HISTORY RECORD
+E23 HISTORY RECORD
+F23 HISTORY RECORD
+G23 HISTORY RECORD
+H23 HISTORY RECORD
+I23 HISTORY RECORD
+J23 HISTORY RECORD
+K23 HISTORY RECORD
+L23 HISTORY RECORD
+M23 HISTORY RECORD
+N23 HISTORY RECORD
+B24 HISTORY RECORD
+C24 HISTORY RECORD
+D24 HISTORY RECORD
+E24 HISTORY RECORD
+F24 HISTORY RECORD
+G24 HISTORY RECORD
+H24 HISTORY RECORD
+I24 HISTORY RECORD
+J24 HISTORY RECORD
+K24 HISTORY RECORD
+L24 HISTORY RECORD
+M24 HISTORY RECORD
+N24 HISTORY RECORD
+B25 DATE
+C25 TICKET # 
+D25 TICKET # 
+E25 ISSUE/ REQUEST
+F25 ISSUE/ REQUEST
+G25 ISSUE/ REQUEST
+H25 SOLUTION/ RECOMMENDATION
+I25 SOLUTION/ RECOMMENDATION
+J25 SOLUTION/ RECOMMENDATION
+K25 SOLUTION/ RECOMMENDATION
+L25 REMARKS
+M25 REMARKS
+N25 CHECKED BY
