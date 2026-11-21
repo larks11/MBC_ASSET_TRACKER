@@ -1,4 +1,6 @@
-import { Activity, FileText, ListChecks, Trash2, Undo2, UserCheck, Warehouse, Wrench, ScrollText, Download } from "lucide-react";
+import {
+  Activity, ClipboardList, FileText, ListChecks, Printer, ScrollText, Trash2, Undo2, UserCheck, Warehouse, Wrench,
+} from "lucide-react";
 import { assetApi, repairApi, reportApi, transactionApi } from "../../services/index.js";
 import StatusBadge from "../../components/ui/StatusBadge.jsx";
 import Button from "../../components/ui/Button.jsx";
@@ -29,21 +31,29 @@ const assetFilters = [
 ];
 
 /**
- * Kada report: source (API call), base filters, filters, columns(ctx), ug optional nga excel export.
- * ctx.download(path, params, filename) → mo-download sa file gikan sa backend template.
+ * Kada report: source (API call), base filters, filters, columns(ctx).
+ * excel = template nga i-preview kung i-click ang Print (path, params, title, filename).
+ * form  = per-document nga template (MR, Disposal): ang Print sa toolbar mo-preview sa pinakaulahi nga
+ *         row, o sa blangko nga form kung walay row.
+ * ctx.preview({ kind, title, path, params, filename }) -> preview sa napuno nga template, dayon download.
  */
 export const REPORTS = [
   {
     id: "masterlist",
     title: "Generate masterlist",
     icon: ListChecks,
-    description: "Every non-consumable asset. Download it on the official IT Asset Masterlist form (MBC-SP-ICT-06F1).",
+    description: "Every non-consumable asset. Print it on the official IT Asset Masterlist form (MBC-SP-ICT-06F1).",
     source: (p, s) => assetApi.list(p, s),
     base: { category: "Non-Consumable" },
     sort: "assetType",
     search: "Search by asset ID, brand, model, serial...",
     filters: assetFilters,
-    excel: { label: "Masterlist (Excel)", path: "/exports/masterlist", params: ["assetType", "status"], filename: "IT-Asset-Masterlist.xlsx" },
+    excel: {
+      title: "IT Asset Masterlist (MBC-SP-ICT-06F1)",
+      path: "/exports/masterlist",
+      params: ["assetType", "status"],
+      filename: "IT-Asset-Masterlist.xlsx",
+    },
     columns: () => [
       assetCols.company, assetCols.assetType, assetCols.assetId, assetCols.brand, assetCols.model,
       assetCols.serialNo, assetCols.user, assetCols.location, assetCols.status,
@@ -53,12 +63,21 @@ export const REPORTS = [
     id: "memorandum-receipt",
     title: "Memorandum receipt",
     icon: FileText,
-    description: "Deployed equipment per employee. Generate the Memorandum Receipt (MBC-SP-WHS-06F1) as a Word file.",
+    description: "Deployed equipment per employee. Print the Memorandum Receipt (MBC-SP-WHS-06F1). Use the row button for a specific one.",
     source: (p, s) => transactionApi.list(p, s),
     base: { type: "Deploy", status: "Completed" },
     sort: "-date",
     search: "Search by transaction number or employee...",
     filters: [{ key: "employee", type: "employee", placeholder: "All employees" }],
+    form: {
+      kind: "docx",
+      title: "Memorandum Receipt (MBC-SP-WHS-06F1)",
+      path: (r) => `/exports/memorandum-receipt/${r._id}`,
+      filename: (r) => `Memorandum-Receipt-${r.transactionNo}.docx`,
+      label: (r) => r.transactionNo,
+      blankPath: "/exports/memorandum-receipt/blank",
+      blankFilename: "Memorandum-Receipt-BLANK.docx",
+    },
     columns: (ctx) => [
       { key: "transactionNo", header: "Transaction number", sortable: true, render: id("transactionNo") },
       { key: "date", header: "Deployed date", sortable: true, ...date("date") },
@@ -74,12 +93,18 @@ export const REPORTS = [
         header: "Action",
         render: (r) => (
           <Button
-            icon={Download}
+            icon={Printer}
             className="!px-3 !py-1.5"
-            disabled={ctx.busy === r._id}
-            onClick={() => ctx.download(`/exports/memorandum-receipt/${r._id}`, {}, `Memorandum-Receipt-${r.transactionNo}.docx`, r._id)}
+            onClick={() =>
+              ctx.preview({
+                kind: "docx",
+                title: `Memorandum Receipt · ${r.transactionNo}`,
+                path: `/exports/memorandum-receipt/${r._id}`,
+                filename: `Memorandum-Receipt-${r.transactionNo}.docx`,
+              })
+            }
           >
-            {ctx.busy === r._id ? "Preparing..." : "Generate MR"}
+            Print MR
           </Button>
         ),
       },
@@ -89,12 +114,18 @@ export const REPORTS = [
     id: "user-receipt",
     title: "IT asset user receipt",
     icon: UserCheck,
-    description: "Equipment each employee currently holds.",
+    description: "Equipment each employee currently holds. Prints on the IT Asset Masterlist form (06F1).",
     source: (p, s) => assetApi.list(p, s),
     base: { status: "Active" },
     sort: "assetType",
     search: "Search by asset ID, brand, serial...",
     filters: [{ key: "currentUser", type: "employee", placeholder: "All employees" }],
+    excel: {
+      title: "IT Asset Masterlist (MBC-SP-ICT-06F1) · Active assets",
+      path: "/exports/masterlist",
+      params: ["status", "currentUser"],
+      filename: "IT-Asset-User-Receipt.xlsx",
+    },
     columns: () => [
       assetCols.user,
       { key: "position", header: "Position", render: (r) => r.currentUser?.position || "—", text: (r) => r.currentUser?.position },
@@ -107,12 +138,18 @@ export const REPORTS = [
     id: "inventory",
     title: "Inventory of assets",
     icon: Warehouse,
-    description: "All assets, consumable and non-consumable, with stock on hand.",
+    description: "All assets, consumable and non-consumable, with stock on hand. Prints on the IT Asset Received Monitoring Form (MBC-SP-ICT-01F2).",
     source: (p, s) => assetApi.list(p, s),
     base: {},
     sort: "assetType",
     search: "Search by asset ID, brand, model, serial...",
     filters: [{ key: "category", placeholder: "All categories", options: ["Non-Consumable", "Consumable"] }, ...assetFilters],
+    excel: {
+      title: "IT Asset Received Monitoring (MBC-SP-ICT-01F2)",
+      path: "/exports/received",
+      params: ["category", "assetType", "status"],
+      filename: "IT-Asset-Received-Monitoring.xlsx",
+    },
     columns: () => [
       assetCols.assetId, { key: "category", header: "Category", sortable: true }, assetCols.assetType, assetCols.brand, assetCols.model,
       assetCols.serialNo,
@@ -121,15 +158,49 @@ export const REPORTS = [
     ],
   },
   {
+    id: "requests",
+    title: "Request monitoring",
+    icon: ClipboardList,
+    description: "Asset requests (RF). Print them on the IT Asset Request Monitoring Form (MBC-SP-ICT-01F1).",
+    source: (p, s) => transactionApi.list(p, s),
+    base: { type: "CheckoutRequest" },
+    sort: "-date",
+    search: "Search by transaction number, employee...",
+    filters: [{ key: "status", placeholder: "All statuses", options: TXN_STATUSES }],
+    excel: {
+      title: "IT Asset Request Monitoring (MBC-SP-ICT-01F1)",
+      path: "/exports/requests",
+      params: ["status"],
+      filename: "IT-Asset-Request-Monitoring.xlsx",
+    },
+    columns: () => [
+      { key: "transactionNo", header: "Transaction no.", sortable: true, render: id("transactionNo") },
+      { key: "date", header: "Date", sortable: true, ...date("date") },
+      { key: "rf", header: "RF no.", render: (r) => r.request?.rfNo || "—", text: (r) => r.request?.rfNo },
+      { key: "employee", header: "Requested by", render: (r) => r.employeeSnapshot?.name || "—", text: (r) => r.employeeSnapshot?.name },
+      { key: "items", header: "Items", className: "tabular", render: (r) => r.items.length, text: (r) => r.items.length },
+      { key: "status", header: "Status", sortable: true, render: badge },
+    ],
+  },
+  {
     id: "disposed",
     title: "Disposed assets",
     icon: Trash2,
-    description: "Items that left inventory. Each task has its own disposal log (MBC-SP-ICT-06F4).",
+    description: "Items that left inventory. Print the disposal log (MBC-SP-ICT-06F4). Use the row button for a specific task.",
     source: (p, s) => reportApi.flat("disposed", p, s),
     base: {},
     sort: "-date",
     search: "Search by task, ticket, asset ID...",
     filters: [],
+    form: {
+      kind: "xlsx",
+      title: "IT Asset Disposal Log (MBC-SP-ICT-06F4)",
+      path: (r) => `/exports/disposal/${r.transactionId}`,
+      filename: (r) => `IT-Asset-Disposal-Log-${r.taskNo || r.transactionNo}.xlsx`,
+      label: (r) => r.taskNo || r.transactionNo,
+      blankPath: "/exports/disposal/blank",
+      blankFilename: "IT-Asset-Disposal-Log-BLANK.xlsx",
+    },
     columns: (ctx) => [
       { key: "date", header: "Disposal date", sortable: true, ...date("date") },
       { key: "taskNo", header: "Task no.", sortable: true },
@@ -142,12 +213,18 @@ export const REPORTS = [
         render: (r) => (
           <Button
             variant="secondary"
-            icon={Download}
+            icon={Printer}
             className="!px-3 !py-1.5"
-            disabled={ctx.busy === r._id}
-            onClick={() => ctx.download(`/exports/disposal/${r.transactionId}`, {}, `IT-Asset-Disposal-Log-${r.taskNo || r.transactionNo}.xlsx`, r._id)}
+            onClick={() =>
+              ctx.preview({
+                kind: "xlsx",
+                title: `Disposal log · ${r.taskNo || r.transactionNo}`,
+                path: `/exports/disposal/${r.transactionId}`,
+                filename: `IT-Asset-Disposal-Log-${r.taskNo || r.transactionNo}.xlsx`,
+              })
+            }
           >
-            Disposal log
+            Print log
           </Button>
         ),
       },
@@ -157,14 +234,19 @@ export const REPORTS = [
     id: "repairs",
     title: "Repair monitoring",
     icon: Wrench,
-    description: "Repair and service tickets. The Excel form (MBC-SP-ICT-06F3) holds 19 tickets, so filter by date or status.",
+    description: "Repair and service tickets. The form (MBC-SP-ICT-06F3) holds 19 tickets, so filter by date or status.",
     source: (p, s) => repairApi.list(p, s),
     base: {},
     sort: "-dateReceived",
     search: "Search by ticket, asset, problem...",
     dates: true,
     filters: [{ key: "status", placeholder: "All statuses", options: REPAIR_STATUSES }],
-    excel: { label: "Repair log (Excel)", path: "/exports/repairs", params: ["status", "from", "to"], filename: "IT-Asset-Repair-Monitoring.xlsx" },
+    excel: {
+      title: "Repair & Service Monitoring (MBC-SP-ICT-06F3)",
+      path: "/exports/repairs",
+      params: ["status", "from", "to"],
+      filename: "IT-Asset-Repair-Monitoring.xlsx",
+    },
     columns: () => [
       { key: "ticketNo", header: "Ticket no.", sortable: true, render: id("ticketNo") },
       { key: "dateReceived", header: "Date received", sortable: true, ...date("dateReceived") },
@@ -224,12 +306,18 @@ export const REPORTS = [
     id: "active",
     title: "Active assets",
     icon: Activity,
-    description: "Assets that are deployed right now.",
+    description: "Assets that are deployed right now. Prints on the IT Asset Masterlist form (06F1).",
     source: (p, s) => assetApi.list(p, s),
     base: { status: "Active" },
     sort: "assetType",
     search: "Search by asset ID, brand, serial...",
     filters: [{ key: "assetType", placeholder: "All asset types", options: ASSET_TYPES }],
+    excel: {
+      title: "IT Asset Masterlist (MBC-SP-ICT-06F1) · Active assets",
+      path: "/exports/masterlist",
+      params: ["assetType", "status"],
+      filename: "IT-Active-Assets.xlsx",
+    },
     columns: () => [assetCols.assetId, assetCols.assetType, assetCols.brand, assetCols.model, assetCols.serialNo, assetCols.user, assetCols.location],
   },
 ];

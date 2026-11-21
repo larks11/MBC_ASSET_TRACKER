@@ -6,14 +6,24 @@ import httpError from "../utils/httpError.js";
 
 const base = crud(Employee, {
   searchFields: ["name", "employeeNo", "position", "department", "email"],
-  filterFields: ["department", "isActive"],
+  filterFields: ["department", "employmentStatus", "isActive"],
   defaultSort: "name",
 });
 
 export const list = base.list;
 export const get = base.get;
-export const create = base.create;
 export const update = base.update;
+
+export const create = asyncHandler(async (req, res, next) => {
+  if (!String(req.body.employeeNo || "").trim()) throw httpError(400, "Employee ID is required");
+  return base.create(req, res, next);
+});
+
+// GET /employees/departments → para sa filter dropdown
+export const departments = asyncHandler(async (req, res) => {
+  const list = await Employee.distinct("department");
+  res.json(list.filter(Boolean).sort((a, b) => a.localeCompare(b)));
+});
 
 export const remove = asyncHandler(async (req, res) => {
   const holding = await Asset.countDocuments({ currentUser: req.params.id, status: "Active" });

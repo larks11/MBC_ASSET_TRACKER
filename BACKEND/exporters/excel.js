@@ -122,3 +122,91 @@ export async function disposalLogXlsx(txn) {
   });
   return output(wb);
 }
+/* ------------------------------------------------------------------ *
+ * MBC-SP-ICT-01F2  IT Asset Received Monitoring Form
+ * Data rows 6-46 (41 rows), columns A-S.
+ * ------------------------------------------------------------------ */
+export const RECEIVED_FORM_CAPACITY = 41;
+const monthYear = () => new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
+
+export async function receivedLogXlsx(assets) {
+  if (assets.length > RECEIVED_FORM_CAPACITY) {
+    throw httpError(
+      400,
+      `The received monitoring form fits ${RECEIVED_FORM_CAPACITY} assets per page but ${assets.length} matched. Narrow the filters.`
+    );
+  }
+  const { wb, ws } = await loadTemplate("MBC-SP-ICT-01F2.xlsx");
+  ws.getCell("A3").value = `Month & Year: ${monthYear()}`;
+
+  assets.forEach((a, i) => {
+    const row = ws.getRow(6 + i);
+    [
+      i + 1,                          // A NO.
+      shortDate(a.receivedDate),      // B DATE RECEIVED
+      a.rfNo || "",                   // C RF NO.
+      a.acumaticaRI || "",            // D ACUMATICA RI #
+      a.quantity ?? 1,                // E QTY.
+      a.unit || "",                   // F UNIT
+      a.assetType || "",              // G ASSET TYPE
+      a.poNo || "",                   // H PO #
+      shortDate(a.datePurchased),     // I DATE PURCHASED
+      a.supplier || "",               // J SUPPLIER
+      shortDate(a.invoiceDate),       // K INVOICE DATE
+      a.invoiceNo || "",              // L INVOICE NO.
+      shortDate(a.warrantyDate),      // M WARRANTY DATE
+      a.rrNo || "",                   // N RR NO.
+      a.amount ?? null,               // O AMOUNT
+      a.brand || "",                  // P BRAND
+      a.model || "",                  // Q MODEL
+      a.serialNo || "",               // R SERIAL NO.
+      a.currentUser?.name || "",      // S USER
+    ].forEach((val, c) => { row.getCell(c + 1).value = val; });
+  });
+  return output(wb);
+}
+
+/* ------------------------------------------------------------------ *
+ * MBC-SP-ICT-01F1  IT Asset Request Monitoring Form
+ * Data rows 6-42 (37 rows), columns A-Q. Usa ka item = usa ka row.
+ * ------------------------------------------------------------------ */
+export const REQUEST_FORM_CAPACITY = 37;
+
+export async function requestLogXlsx(txns) {
+  const rows = txns.flatMap((t) =>
+    (t.items?.length ? t.items : [{}]).map((it) => ({ t, it, a: it.asset || {} }))
+  );
+  if (rows.length > REQUEST_FORM_CAPACITY) {
+    throw httpError(
+      400,
+      `The request monitoring form fits ${REQUEST_FORM_CAPACITY} rows per page but ${rows.length} matched. Narrow the filters.`
+    );
+  }
+  const { wb, ws } = await loadTemplate("MBC-SP-ICT-01F1.xlsx");
+  ws.getCell("A3").value = `Month & Year: ${monthYear()}`;
+
+  rows.forEach(({ t, it, a }, i) => {
+    const req = t.request || {};
+    const row = ws.getRow(6 + i);
+    [
+      i + 1,                                     // A NO.
+      shortDate(req.receivedDate || t.date),     // B REQUEST RECEIVED DATE
+      req.rfNo || "",                            // C RF NO.
+      shortDate(req.rfDate),                     // D RF DATE
+      req.acumaticaRI || "",                     // E ACUMATICA RI #
+      it.qty ?? "",                              // F QTY.
+      it.unit || "",                             // G UNIT
+      a.assetType || "",                         // H ASSET TYPE
+      it.particulars || it.details || "",        // I PARTICULARS
+      t.employeeSnapshot?.name || "",            // J REQUESTED BY
+      a.assetId || "",                           // K ASSET ID
+      a.brand || "",                             // L BRAND
+      a.model || "",                             // M MODEL
+      a.serialNo || "",                          // N SERIAL NO.
+      a.currentUser?.name || "",                 // O USER
+      t.location || t.department || "",          // P LOCATION
+      req.source || "",                          // Q REMARKS (Purchased / Provided by ICT)
+    ].forEach((val, c) => { row.getCell(c + 1).value = val; });
+  });
+  return output(wb);
+}

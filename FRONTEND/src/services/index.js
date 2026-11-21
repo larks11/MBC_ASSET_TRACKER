@@ -22,7 +22,11 @@ export const assetApi = {
   adjustStock: (id, body) => api.post(`/assets/${id}/stock`, body),
 };
 
-export const employeeApi = { ...crudApi("/employees"), assets: (id) => api.get(`/employees/${id}/assets`) };
+export const employeeApi = {
+  ...crudApi("/employees"),
+  assets: (id) => api.get(`/employees/${id}/assets`),
+  departments: () => api.get("/employees/departments"),
+};
 
 export const transactionApi = {
   ...crudApi("/transactions"),

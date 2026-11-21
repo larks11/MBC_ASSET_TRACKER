@@ -7,12 +7,24 @@ import maintenanceRoutes from "./maintenanceRoutes.js";
 import serviceRequestRoutes from "./serviceRequestRoutes.js";
 import exportRoutes from "./exportRoutes.js";
 import reportRoutes from "./reportRoutes.js";
+import authRoutes from "./authRoutes.js";
+import adminRoutes from "./adminRoutes.js";
+import { protect, adminOnly } from "../middleware/auth.js";
 import { summary } from "../controllers/dashboardController.js";
 import * as K from "../constants/index.js";
 import { DESKTOP_CHECKLIST, CCTV_CHECKLIST } from "../constants/checklists.js";
 import { TYPE_CODES } from "../utils/generateId.js";
 
 const router = Router();
+
+// PUBLIC: login ug register ra
+router.use("/auth", authRoutes);
+
+// PRIVATE: tanan sa ubos kinahanglan naka-login (ug approved)
+router.use(protect);
+
+// ADMIN ONLY
+router.use("/admin", adminOnly, adminRoutes);
 
 router.get("/dashboard", summary);
 

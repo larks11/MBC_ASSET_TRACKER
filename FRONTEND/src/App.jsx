@@ -1,5 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 import MainLayout from "./layouts/MainLayout.jsx";
+import Login from "./pages/auth/Login.jsx";
+import Register from "./pages/auth/Register.jsx";
+import MyAccount from "./pages/MyAccount.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Assets from "./pages/Assets.jsx";
 import Employees from "./pages/Employees.jsx";
@@ -11,24 +18,40 @@ import ReportView from "./pages/reports/ReportView.jsx";
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="assets" element={<Assets />} />
-        <Route path="assets/consumable" element={<ComingSoon title="Consumable assets" description="Available stocks, added items, requests, and pull-out logs." />} />
-        <Route path="transactions/deploy" element={<TransactionPage key="deploy" mode="deploy" />} />
-        <Route path="transactions/repair" element={<Repairs />} />
-        <Route path="transactions/return" element={<TransactionPage key="return" mode="return" />} />
-        <Route path="transactions/disposal" element={<TransactionPage key="disposal" mode="disposal" />} />
-        <Route path="maintenance" element={<ComingSoon title="Preventive maintenance" description="Checklists, CCTV monitoring, and server room logs." />} />
-        <Route path="reports" element={<ReportsLayout />}>
-          <Route index element={<Navigate to="masterlist" replace />} />
-          <Route path=":reportId" element={<ReportView />} />
+    <AuthProvider>
+      <Routes>
+        {/* PUBLIC */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* PRIVATE: kinahanglan naka-login */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<MainLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="account" element={<MyAccount />} />
+
+            {/* ADMIN ONLY */}
+            <Route element={<AdminRoute />}>
+              <Route path="admin" element={<AdminDashboard />} />
+            </Route>
+
+            <Route path="assets" element={<Assets />} />
+            <Route path="assets/consumable" element={<ComingSoon title="Consumable assets" description="Available stocks, added items, requests, and pull-out logs." />} />
+            <Route path="transactions/deploy" element={<TransactionPage key="deploy" mode="deploy" />} />
+            <Route path="transactions/repair" element={<Repairs />} />
+            <Route path="transactions/return" element={<TransactionPage key="return" mode="return" />} />
+            <Route path="transactions/disposal" element={<TransactionPage key="disposal" mode="disposal" />} />
+            <Route path="maintenance" element={<ComingSoon title="Preventive maintenance" description="Checklists, CCTV monitoring, and server room logs." />} />
+            <Route path="reports" element={<ReportsLayout />}>
+              <Route index element={<Navigate to="masterlist" replace />} />
+              <Route path=":reportId" element={<ReportView />} />
+            </Route>
+            <Route path="employees" element={<Employees />} />
+            <Route path="service-requests" element={<ComingSoon title="Service requests" description="IT Service Request Forms (MBC-SP-ICT-03F1)." />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
         </Route>
-        <Route path="employees" element={<Employees />} />
-        <Route path="service-requests" element={<ComingSoon title="Service requests" description="IT Service Request Forms (MBC-SP-ICT-03F1)." />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </AuthProvider>
   );
 }
