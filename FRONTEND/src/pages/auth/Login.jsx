@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AlertCircle, ArrowRight, Clock, Eye, EyeOff, Loader2, Lock, LogIn, User } from "lucide-react";
 import AuthShell from "./AuthShell.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { LOGOUT_REASON_KEY } from "../../services/api.js";
 
 const input =
   "w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-800 placeholder:text-slate-400 transition focus:border-[#00A651] focus:outline-none focus:ring-4 focus:ring-[#00A651]/15";
+
+// Kung gi-logout sa api.js (401), ipakita ang rason isip amber nga banner
+const readLogoutReason = () => {
+  try {
+    const reason = sessionStorage.getItem(LOGOUT_REASON_KEY);
+    return reason ? { text: reason, tone: "warn" } : null;
+  } catch {
+    return null;
+  }
+};
 
 export default function Login() {
   const { user, login } = useAuth();
@@ -14,8 +25,17 @@ export default function Login() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [error, setError] = useState(null); // { text, tone: "error" | "warn" }
+  const [error, setError] = useState(readLogoutReason); // { text, tone: "error" | "warn" }
   const [busy, setBusy] = useState(false);
+
+  // Human nakita ang rason, i-clear aron dili na mo-balik sa sunod nga abli
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem(LOGOUT_REASON_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   if (user) return <Navigate to="/" replace />;
 

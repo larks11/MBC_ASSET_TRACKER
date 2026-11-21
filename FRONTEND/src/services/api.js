@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const TOKEN_KEY = "iams.token";
+export const LOGOUT_REASON_KEY = "iams.logout.reason";
 
 export const getToken = () => {
   try {
@@ -48,9 +49,21 @@ api.interceptors.response.use(
       /* dili JSON */
     }
 
-    // Expired/invalid token: i-logout ang user (dili mo-trigger sa sayop nga login kay wala pay token)
-    if (err.response?.status === 401 && getToken()) {
+    // Expired/invalid token: i-logout ang user. Ang login/register mismo dili apil.
+    const url = err.config?.url || "";
+    const isAuthForm = /\/auth\/(login|register)/.test(url);
+    if (err.response?.status === 401 && getToken() && !isAuthForm) {
       clearToken();
+      // I-save ang rason aron makita sa login page (dili na hilom nga ma-logout)
+      try {
+        const method = (err.config?.method || "get").toUpperCase();
+        sessionStorage.setItem(
+          LOGOUT_REASON_KEY,
+          `${data?.message || "Your session ended."} [${method} ${url}]`
+        );
+      } catch {
+        /* ignore */
+      }
       window.dispatchEvent(new Event("auth:logout"));
     }
 
