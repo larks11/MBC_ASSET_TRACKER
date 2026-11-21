@@ -10,11 +10,26 @@ import { notFound, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 
+// Gitugotan nga mga origin (comma-separated). I-trim ug tangtangon ang "/" sa katapusan
+// aron dili mag-mismatch kung naay sayop sa pagsulat sa CLIENT_URL.
+const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:5173")
+  .split(",")
+  .map((o) => o.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
+
+console.log("CORS allowed origins:", allowedOrigins.join(", "));
+
 app.use(helmet());
 app.use(
   cors({
-    origin: (process.env.CLIENT_URL || "http://localhost:5173").split(","),
-    exposedHeaders: ["Content-Disposition"], // needed for file downloads (Step 4)
+    origin: (origin, callback) => {
+      // Walay origin = same-origin / curl / health check: tugotan
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin.replace(/\/+$/, ""))) return callback(null, true);
+      console.warn(`CORS blocked origin: ${origin}`);
+      return callback(null, false);
+    },
+    exposedHeaders: ["Content-Disposition"], // needed for file downloads
   })
 );
 app.use(express.json({ limit: "5mb" }));
