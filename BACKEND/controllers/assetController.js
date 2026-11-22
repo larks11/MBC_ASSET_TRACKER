@@ -143,3 +143,57 @@ export const previewHistory = asyncHandler(async (req, res) => {
   const data = await loadHistoryData(req.params.id);
   res.type("html").send(await buildHistoryPreviewHtml(data));
 });
+
+const escapeRx = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// GET /assets/stock-logs?movement=Added,Return&assetType=&search=&from=&to=&page=&limit=&sort=
+// Tanang stock movement sa tanang consumable (para sa "Added items" ug "Requests" nga tab)
+export const allStockLogs = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 10, sort = "-date", movement, assetType, search, from, to } = req.query;
+
+  const assetFilter = { category: "Consumable" };
+  if (assetType) assetFilter.assetType = assetType;
+
+  const and = [];
+  const assetIds = await Asset.distinct("_id", assetFilter);
+  and.push({ asset: { $in: assetIds } });
+
+  if (movement) {
+    and.push({ movement: { $in: String(movement).split(",").map((m) => m.trim()).filter(Boolean) } });
+  }
+  if (from || to) {
+    const range = {};
+    if (from) range.$gte = new Date(from);
+    if (to) range.$lte = new Date(new Date(to).setHours(23, 59, 59, 999));
+    and.push({ date: range });
+  }
+
+  const q = String(search || "").trim();
+  if (q) {
+    const rx = new RegExp(escapeRx(q), "i");
+    const matched = await Asset.distinct("_id", {
+      ...assetFilter,
+      $or: ["assetId", "assetType", "brand", "model"].map((f) => ({ [f]: rx })),
+    });
+    and.push({ $or: [{ asset: { $in: matched } }, { refNo: rx }, { requestedBy: rx }, { remarks: rx }] });
+  }
+
+  const field = String(sort).replace(/^-/, "");
+  const sortSpec = ["date", "qty", "balanceAfter", "movement"].includes(field) ? String(sort) : "-date";
+
+  const p = Math.max(parseInt(page, 10) || 1, 1);
+  const l = Math.min(Math.max(parseInt(limit, 10) || 10, 1), 1000);
+  const filter = { $and: and };
+
+  const [data, total] = await Promise.all([
+    StockLog.find(filter)
+      .sort(sortSpec)
+      .skip((p - 1) * l)
+      .limit(l)
+      .populate("asset", "assetId assetType brand model unit company")
+      .lean(),
+    StockLog.countDocuments(filter),
+  ]);
+
+  res.json({ data, meta: { total, page: p, limit: l, pages: Math.ceil(total / l) || 1 } });
+});

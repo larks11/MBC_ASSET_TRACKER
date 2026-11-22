@@ -14,8 +14,11 @@ const { Schema } = mongoose;
   periods (performed/noted per quarter or month):
   { q1: { performedBy, datePerformed, notedBy }, ... } or { m1: {...}, ... }
 
+  verifications (PMS Verify, per quarter):
+  { q1: { status: "Pending" | "Approved" | "Rejected", verifiedBy, verifiedAt }, ... }
+
   header (extra fields on top of the form):
-  DESKTOP_LAPTOP: { computerName, userName, processor, ram, location }
+  DESKTOP_LAPTOP: { taskId, computerName, userName, processor, ram, location }
   CCTV_PM / CCTV_DAILY_BACKUP: { model, serialNo, location, channels, camerasInstalled, hddCapacity, ipAddress }
 */
 const maintenanceLogSchema = new Schema(
@@ -27,6 +30,7 @@ const maintenanceLogSchema = new Schema(
     header: { type: Schema.Types.Mixed, default: {} },
     records: { type: Schema.Types.Mixed, default: {} },
     periods: { type: Schema.Types.Mixed, default: {} },
+    verifications: { type: Schema.Types.Mixed, default: {} },
     comments: String,
   },
   { timestamps: true, minimize: false }

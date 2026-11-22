@@ -35,8 +35,20 @@ export const transactionApi = {
 };
 
 export const repairApi = crudApi("/repairs");
-export const maintenanceApi = crudApi("/maintenance");
-export const serviceRequestApi = crudApi("/service-requests");
+
+export const maintenanceApi = {
+  ...crudApi("/maintenance"),
+  performDesktop: (body) => api.post("/maintenance/desktop/perform", body),
+  verify: (id, body) => api.post(`/maintenance/${id}/verify`, body),
+};
+
+export const serviceRequestApi = {
+  ...crudApi("/service-requests"),
+  stats: (signal) => api.get("/service-requests/stats", { signal }),
+  technicians: () => api.get("/service-requests/technicians"),
+  changeStatus: (id, body) => api.post(`/service-requests/${id}/status`, body),
+  assign: (id, body) => api.post(`/service-requests/${id}/assign`, body),
+};
 
 // Reports: disposed / returned (naka-flatten nga items kada transaction)
 export const reportApi = { flat: (name, params, signal) => api.get(`/reports/${name}`, { params, signal }) };

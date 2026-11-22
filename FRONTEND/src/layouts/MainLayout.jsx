@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  Bell, Boxes, CheckCircle2, ChevronDown, FileBarChart, LayoutDashboard,
+  Bell, Boxes, CheckCircle2, ChevronDown, FileBarChart, Headset, LayoutDashboard,
   LogOut, Menu, PanelLeftClose, PanelLeftOpen, Send, UserCircle, Wrench,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar.jsx";
-import { dashboardApi } from "../services/index.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import { dashboardApi, serviceRequestApi } from "../services/index.js";
 
 const STORE_KEY = "iams.sidebar.collapsed";
 
@@ -40,10 +40,10 @@ function NotificationBell() {
     let ctrl = new AbortController();
     const load = () => {
       ctrl = new AbortController();
-      dashboardApi
-        .summary(ctrl.signal)
-        .then((d) => alive && setData(d))
-        .catch(() => {});
+      Promise.all([
+        dashboardApi.summary(ctrl.signal).catch(() => null),
+        serviceRequestApi.stats(ctrl.signal).catch(() => null),
+      ]).then(([d, s]) => alive && setData({ ...(d || {}), sr: s?.notify }));
     };
     load();
     const timer = setInterval(() => {
@@ -58,6 +58,8 @@ function NotificationBell() {
   }, []);
 
   const items = [
+    { to: "/service-requests", label: "Service requests awaiting approval", n: data?.sr?.awaitingApproval, icon: Headset },
+    { to: "/service-requests", label: "Service requests assigned to you", n: data?.sr?.assignedToMe, icon: Headset },
     { to: "/transactions/deploy", label: "Pending transactions", n: data?.pendingTransactions, icon: Send },
     { to: "/transactions/repair", label: "Open repair tickets", n: data?.openRepairs, icon: Wrench },
     { to: "/assets/consumable", label: "Consumables at or below reorder level", n: data?.consumables?.lowStock, icon: Boxes },
@@ -91,7 +93,7 @@ function NotificationBell() {
           ) : (
             <ul className="divide-y divide-line">
               {items.map(({ to, label, n, icon: Icon }) => (
-                <li key={to}>
+                <li key={label}>
                   <Link to={to} onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm hover:bg-brand-50">
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
                       <Icon size={17} />
@@ -233,7 +235,7 @@ export default function MainLayout() {
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div key={pathname} className="mx-auto max-w-7xl animate-fade-in">
+                <div key={pathname} className="page-enter mx-auto max-w-7xl">
             <Outlet />
           </div>
         </main>
