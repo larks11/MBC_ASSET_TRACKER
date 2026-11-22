@@ -13,7 +13,7 @@ import Consumables from "./pages/Consumables.jsx";
 import Employees from "./pages/Employees.jsx";
 import TransactionPage from "./pages/TransactionPage.jsx";
 import Repairs from "./pages/Repairs.jsx";
-import ComingSoon from "./pages/ComingSoon.jsx";
+import ServiceRequests from "./pages/ServiceRequests.jsx";
 import ReportsLayout from "./pages/reports/ReportsLayout.jsx";
 import ReportView from "./pages/reports/ReportView.jsx";
 import Maintenance from "./pages/Maintenance.jsx";
@@ -49,7 +49,7 @@ export default function App() {
               <Route path=":reportId" element={<ReportView />} />
             </Route>
             <Route path="employees" element={<Employees />} />
-            <Route path="service-requests" element={<ComingSoon title="Service requests" description="IT Service Request Forms (MBC-SP-ICT-03F1)." />} />
+            <Route path="service-requests" element={<ServiceRequests />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Route>
